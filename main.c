@@ -1,4 +1,4 @@
-#include "data_operations.h"
+#include "db_types.h"
 
 int main() {
 	printf("It's main function of a database\n");
@@ -13,6 +13,11 @@ int main() {
 	insert_row(table, fields);
 	
 	fields[0].int_val = 54;
+	insert_row(table, fields);
+
+	fields[0].int_val = 1;
+	fields[1].str_val = "CPD";
+	fields[2].str_val = "FGHH";
 	insert_row(table, fields);
 
 	print_table(table);

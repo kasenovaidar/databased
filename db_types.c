@@ -1,4 +1,4 @@
-#include "data_operations.h"
+#include "db_types.h"
 
 /*
  * Создаёт новую таблицу без строк.

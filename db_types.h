@@ -1,7 +1,9 @@
-#ifndef ENTITIES
-#define ENTITIES
+#ifndef DB_TYPES
+#define DB_TYPES
 
-#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 /* Возможные типы полей */
 typedef enum {
@@ -36,4 +38,10 @@ typedef struct {
 	Row *last_row;
 } Table;
 
-#endif /* ENTITIES */
+Table *create_table(const char *table_name, size_t field_count, FieldType *types);
+void free_table(Table *table);
+void insert_row(Table *table, Field *fields);
+void print_row(Row *row,Table *table);
+void print_table(Table *table);
+
+#endif // DB_TYPES
