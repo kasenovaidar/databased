@@ -59,26 +59,33 @@ Token get_next_token(const char **input) {
 	return token;
 }
 
-int main() {
-	const char *query = "select * from users where id = 123";
+// Принимает строку запроса и возвращает указатель на массив токенов
+// count - количество токенов
+// возвращает  NULL если токены не были считаны
+Token *get_tokens(const char *query, size_t *count) {
 	const char *p = query;
+	Token *tokens = NULL;
+	*count = 0;
 
-	while (true) {
+	for (;;) {
 		Token token = get_next_token(&p);
 		if (token.type == TOKEN_EOF) {
 			break;
 		}
 
-		const char *token_type_str;
-		switch (token.type) {
-			case TOKEN_KEYWORD:		token_type_str = "KEYWORD"; break;
-			case TOKEN_NUMBER:		token_type_str = "NUMBER"; break;
-			default:				token_type_str = "UNKNOWN"; break;
-		}
-
-		printf("%s\t%s\n", token_type_str, token.value);
+		tokens = realloc(tokens, ++(*count) * sizeof(Token));
+		tokens[(*count) - 1] = token;
 	}
 	
+	return tokens;
+}
+
+int main() {
+	const char *query = "select * from users where id = 123";
+	size_t token_count;
+	Token *tokens = get_tokens(query, &token_count);
+	for (size_t i = 0; i < token_count; i++) { printf("%s\n", tokens[i].value); }
+	printf("Token count = %ld\n", token_count);
 	return 0;
 }
 	
