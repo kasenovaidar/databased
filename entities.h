@@ -1,7 +1,7 @@
 #ifndef ENTITIES
 #define ENTITIES
 
-#include <stdlib.h>
+#include <stddef.h>
 
 /* Возможные типы полей */
 typedef enum {
@@ -9,24 +9,31 @@ typedef enum {
 	FIELD_TYPE_STRING
 } FieldType;
 
-/* Описание поля */
 typedef struct {
-	FieldType type;
-	char name[64];
-	size_t max_length; /* ограничение для строк */
-} FieldDef;
+	union {
+		int int_val;
+		char *str_val;
+	};
+} Field;
 
 /* Описание строки */
-typedef struct {
-	void **values; /* указатель на массив с данными */
-} Row;
+typedef struct Row Row;
+
+struct Row {
+	Field *fields;
+	Row *next_row;
+};
 
 /* Описание таблицы */
 typedef struct {
-	FieldDef *fields; /* Схема */
+	char *name;
+
 	size_t field_count;
-	Row *rows;
 	size_t row_count;
+
+	FieldType *field_types;
+	Row *first_row;
+	Row *last_row;
 } Table;
 
 #endif /* ENTITIES */
