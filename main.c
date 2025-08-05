@@ -1,28 +1,35 @@
 #include "db_types.h"
 
+void process_create(char *input_buffer, size_t buffer_length) {
+	printf("CREATE COMMAND PROCESSED\n");
+}
+
 int main() {
 	printf("It's main function of a database\n");
 
-	FieldType types[3] = { FIELD_TYPE_INT, FIELD_TYPE_STRING, FIELD_TYPE_STRING };
-	Table *table = create_table("Just table", 3, types);
+	char *input_buffer;
+	size_t buffer_length;
+	// REPL
+	for (;;) {
+		printf("> ");
+		ssize_t bytes_read = getline(&input_buffer, &buffer_length, stdin);
 
-	Field fields[3];
-	fields[0].int_val = 34;
-	fields[1].str_val = "Thulu";
-	fields[2].str_val = "Bunk";
-	insert_row(table, fields);
-	
-	fields[0].int_val = 54;
-	insert_row(table, fields);
+		if (bytes_read <= 0) {
+			printf("Error reading input\n");
+			exit(EXIT_FAILURE);
+		}
 
-	fields[0].int_val = 1;
-	fields[1].str_val = "CPD";
-	fields[2].str_val = "FGHH";
-	insert_row(table, fields);
-
-	print_table(table);
-
-	free_table(table);
+		if (strncmp(input_buffer, "exit", 4) == 0) {
+			break;
+		}
+		else if (strncmp(input_buffer, "create", 6) == 0) {
+			process_create(input_buffer, buffer_length);
+		}
+		else {
+			printf("Unrecognized command.\n");
+			continue;
+		}
+	}	
 
 	return 0;
 }

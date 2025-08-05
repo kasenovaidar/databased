@@ -1,20 +1,4 @@
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-typedef enum {
-	TOKEN_KEYWORD,
-	TOKEN_NUMBER,
-	TOKEN_UNKNOWN,
-	TOKEN_EOF
-} TokenType;
-
-typedef struct {
-	TokenType type;
-	char value[256];
-} Token;
+#include "parser.h"
 
 Token get_next_token(const char **input) {
 	Token token;
@@ -80,12 +64,3 @@ Token *get_tokens(const char *query, size_t *count) {
 	return tokens;
 }
 
-int main() {
-	const char *query = "select * from users where id = 123";
-	size_t token_count;
-	Token *tokens = get_tokens(query, &token_count);
-	for (size_t i = 0; i < token_count; i++) { printf("%s\n", tokens[i].value); }
-	printf("Token count = %ld\n", token_count);
-	return 0;
-}
-	
